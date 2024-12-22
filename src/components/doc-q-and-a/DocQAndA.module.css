@@ -1,0 +1,7 @@
+.section {
+  @apply space-y-4 flex-1;
+}
+
+.control {
+  @apply space-y-2;
+}
