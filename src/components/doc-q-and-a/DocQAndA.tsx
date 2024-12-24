@@ -1,16 +1,46 @@
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import styles from "./DocQAndA.module.css";
 
-import docQAndModel from "@/lib/ai/doc-q-and-a/model";
+import { DocQAndAWorkerResponse } from "@/lib/ai/doc-q-and-a/worker";
+import DocQAndAWorker from "@/lib/ai/doc-q-and-a/worker?worker";
 
 export default function DocQAndA() {
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [question, setQuestion] = useState<string>("");
   const [processing, setProcessing] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
+  const worker = useRef<Worker | null>(null);
+
+  useEffect(() => {
+    worker.current = new DocQAndAWorker();
+    const handleMessageReceived = (
+      event: MessageEvent<DocQAndAWorkerResponse>,
+    ) => {
+      const output = event.data;
+      setProcessing(false);
+      setAnswers(
+        output.flatMap((ans) => {
+          if ("answer" in ans) {
+            return ans.answer;
+          }
+          return ans.flatMap((a) => a.answer);
+        }),
+      );
+    };
+    worker.current.addEventListener("message", handleMessageReceived);
+    return () => {
+      worker.current?.removeEventListener("message", handleMessageReceived);
+    };
+  }, []);
 
   const handleImageChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const target = event.target as HTMLInputElement;
@@ -23,28 +53,11 @@ export default function DocQAndA() {
   };
 
   const handleAnswer = async () => {
-    try {
-      if (!documentFile || !question) {
-        return;
-      }
-      setProcessing(true);
-      await docQAndModel.createPipeline();
-      const output = await docQAndModel.answer(
-        URL.createObjectURL(documentFile),
-        question,
-      );
-
-      setAnswers(
-        output.flatMap((ans) => {
-          if ("answer" in ans) {
-            return ans.answer;
-          }
-          return ans.flatMap((a) => a.answer);
-        }),
-      );
-    } finally {
-      setProcessing(false);
+    if (!documentFile || !question) {
+      return;
     }
+    setProcessing(true);
+    worker.current?.postMessage({ image: documentFile, question });
   };
 
   return (

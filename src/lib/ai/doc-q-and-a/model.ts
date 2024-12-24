@@ -32,6 +32,6 @@ const docQAndModel = {
   },
 };
 
-export type DocQAndAWorker = typeof docQAndModel;
+export type DocQAndAModel = typeof docQAndModel;
 
 export default docQAndModel;
