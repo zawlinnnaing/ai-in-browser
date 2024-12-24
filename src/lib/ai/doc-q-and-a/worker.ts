@@ -6,9 +6,19 @@ export interface DocQAndAEventMessage {
   question: string;
 }
 
+export type DocQAndAWorkerSuccessResponse = {
+  type: "success";
+  data: DocumentQuestionAnsweringOutput | DocumentQuestionAnsweringOutput[];
+};
+
+export type DocQAndAWorkerErrorResponse = {
+  type: "error";
+  data: unknown;
+};
+
 export type DocQAndAWorkerResponse =
-  | DocumentQuestionAnsweringOutput
-  | DocumentQuestionAnsweringOutput[];
+  | DocQAndAWorkerSuccessResponse
+  | DocQAndAWorkerErrorResponse;
 
 self.onmessage = async (event: MessageEvent<DocQAndAEventMessage>) => {
   try {
@@ -17,8 +27,14 @@ self.onmessage = async (event: MessageEvent<DocQAndAEventMessage>) => {
       URL.createObjectURL(event.data.image),
       event.data.question,
     );
-    self.postMessage(output);
-  } catch {
-    self.postMessage([]);
+    self.postMessage({
+      type: "success",
+      data: output,
+    });
+  } catch (error) {
+    self.postMessage({
+      type: "error",
+      data: error,
+    });
   }
 };

@@ -18,6 +18,7 @@ export default function DocQAndA() {
   const [question, setQuestion] = useState<string>("");
   const [processing, setProcessing] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const worker = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -25,16 +26,20 @@ export default function DocQAndA() {
     const handleMessageReceived = (
       event: MessageEvent<DocQAndAWorkerResponse>,
     ) => {
-      const output = event.data;
       setProcessing(false);
-      setAnswers(
-        output.flatMap((ans) => {
-          if ("answer" in ans) {
-            return ans.answer;
-          }
-          return ans.flatMap((a) => a.answer);
-        }),
-      );
+      if (event.data.type === "error") {
+        setError("Failed to generate answer.");
+      } else {
+        const output = event.data.data;
+        setAnswers(
+          output.flatMap((ans) => {
+            if ("answer" in ans) {
+              return ans.answer;
+            }
+            return ans.flatMap((a) => a.answer);
+          }),
+        );
+      }
     };
     worker.current.addEventListener("message", handleMessageReceived);
     return () => {
@@ -94,7 +99,11 @@ export default function DocQAndA() {
           </div>
         ) : (
           <div>
-            <p>No answers yet.</p>
+            {error ? (
+              <p className="text-destructive">{error} </p>
+            ) : (
+              <p>No answers yet</p>
+            )}
           </div>
         )}
       </div>
