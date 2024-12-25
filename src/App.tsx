@@ -14,8 +14,12 @@ function App() {
           .
         </p>
       </div>
-      <div>
+      <div className="space-y-4">
         <DocQAndA />
+        <p className="text-sm text-muted-foreground text-center">
+          If this is first time running, it may take a while to download the
+          model.
+        </p>
       </div>
     </div>
   );
