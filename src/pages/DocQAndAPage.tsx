@@ -1,7 +1,6 @@
-import "./App.css";
-import DocQAndA from "./components/doc-q-and-a/DocQAndA";
+import DocQAndA from "../components/doc-q-and-a/DocQAndA";
 
-function App() {
+function DocQAndAPage() {
   return (
     <div className="py-4 max-w-screen-lg mx-auto space-y-4">
       <div className="space-y-2">
@@ -25,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default DocQAndAPage;

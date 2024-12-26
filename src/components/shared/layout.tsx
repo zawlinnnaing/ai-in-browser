@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
-import AppSidebar from "./AppSideBar";
+import AppSidebar from "./AppSidebar";
+import { Outlet } from "react-router";
 
 type Props = PropsWithChildren;
 
@@ -10,7 +11,7 @@ export default function Layout(props: Props) {
       <AppSidebar />
       <main className="py-6 px-4 w-full">
         <SidebarTrigger />
-        {props.children}
+        <Outlet />
       </main>
     </SidebarProvider>
   );

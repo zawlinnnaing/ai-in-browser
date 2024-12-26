@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
+import { Link } from "react-router";
 
 export default function AppSidebar() {
   return (
@@ -29,7 +30,9 @@ export default function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton>Document Q&A</SidebarMenuButton>
+                <SidebarMenuButton asChild>
+                  <Link to="/doc-q-and-a">Document Q&A</Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
@@ -38,8 +41,10 @@ export default function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <SettingsIcon /> &nbsp; Settings
+            <SidebarMenuButton asChild>
+              <Link to="/settings">
+                <SettingsIcon /> &nbsp; Settings
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
