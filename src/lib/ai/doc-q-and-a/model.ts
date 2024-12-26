@@ -1,4 +1,5 @@
-import { assertNonEmpty } from "@/lib/utils";
+import { assertNonEmpty } from "@/lib/shared/utils";
+import cacheConnector from "@/lib/storage/cache-connector";
 import {
   DocumentQuestionAnsweringPipeline,
   ImageInput,
@@ -6,7 +7,7 @@ import {
 } from "@huggingface/transformers";
 
 let pipelineInstance: DocumentQuestionAnsweringPipeline | undefined;
-
+export const MODEL_NAME = "Xenova/donut-base-finetuned-docvqa";
 const docQAndModel = {
   async createPipeline() {
     if (pipelineInstance) {
@@ -14,11 +15,12 @@ const docQAndModel = {
     }
     pipelineInstance = await pipeline(
       "document-question-answering",
-      "Xenova/donut-base-finetuned-docvqa",
+      MODEL_NAME,
       {
         device: "webgpu",
       },
     );
+    cacheConnector.syncCacheToDatabase();
     return pipelineInstance;
   },
 
