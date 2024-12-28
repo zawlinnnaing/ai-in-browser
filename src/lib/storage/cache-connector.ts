@@ -1,40 +1,27 @@
 import { MODELS_CACHE_NAME } from "@/lib/shared/constants";
-import modelDatabase, { ModelFile } from "@/lib/storage/model-databse";
+import modelDatabase from "@/lib/storage/model-database";
+import modelCache from "./model-cache";
 
 const cacheConnector = {
   syncCacheToDatabase: async () => {
-    const cache = await caches.open(MODELS_CACHE_NAME);
-    const keys = await cache.keys();
-    const files: ModelFile[] = [];
-    await Promise.all(
-      keys.map(async (request) => {
-        const response = await cache.match(request);
-        if (response) {
-          const blob = await response.blob();
-          files.push({
-            name: request.url,
-            content: blob,
-          });
-        }
-      }),
-    );
+    const files = await modelCache.fetchModels();
     await modelDatabase.saveModel(files);
   },
   loadFromDatabase: async () => {
-    const files = await modelDatabase.loadModel();
+    const files = await modelDatabase.fetchModels();
     const cache = await caches.open(MODELS_CACHE_NAME);
     const cacheKeys = await caches.keys();
 
     await Promise.all(
       files.map((file) => {
         const foundCache = cacheKeys.find((key) =>
-          file.name.toLowerCase().includes(key.toLowerCase()),
+          file.url.toLowerCase().includes(key.toLowerCase()),
         );
         if (foundCache) {
           return;
         }
         const response = new Response(file.content);
-        return cache.put(file.name, response);
+        return cache.put(file.url, response);
       }),
     );
   },

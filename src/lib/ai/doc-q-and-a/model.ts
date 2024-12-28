@@ -1,3 +1,4 @@
+import { SUPPORTED_MODELS } from "@/lib/shared/models";
 import { assertNonEmpty } from "@/lib/shared/utils";
 import cacheConnector from "@/lib/storage/cache-connector";
 import {
@@ -7,7 +8,6 @@ import {
 } from "@huggingface/transformers";
 
 let pipelineInstance: DocumentQuestionAnsweringPipeline | undefined;
-export const MODEL_NAME = "Xenova/donut-base-finetuned-docvqa";
 const docQAndModel = {
   async createPipeline() {
     if (pipelineInstance) {
@@ -15,7 +15,7 @@ const docQAndModel = {
     }
     pipelineInstance = await pipeline(
       "document-question-answering",
-      MODEL_NAME,
+      SUPPORTED_MODELS.docQAndA,
       {
         device: "webgpu",
       },

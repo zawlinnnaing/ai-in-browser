@@ -1,14 +1,12 @@
+import PageLayout from "@/components/shared/PageLayout";
 import DocQAndA from "../components/doc-q-and-a/DocQAndA";
 
 function DocQAndAPage() {
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-2xl">Document Question and Answering</h1>
-        <p className="text-sm text-muted-foreground">
-          Ask questions about the content of the document image and get answers.
-        </p>
-      </div>
+    <PageLayout
+      title="Document Question and Answering"
+      description="Ask questions about the content of the document image and get answers."
+    >
       <div className="space-y-4">
         <DocQAndA />
         <p className="text-sm text-muted-foreground">
@@ -16,7 +14,7 @@ function DocQAndAPage() {
           model.
         </p>
       </div>
-    </div>
+    </PageLayout>
   );
 }
 

@@ -1,14 +1,14 @@
 import { DB_NAME } from "../shared/constants";
 
 export interface ModelFile {
-  name: string;
+  url: string;
   content: Blob;
 }
 
 export class ModelDatabase {
   private readonly STORE_NAME = "models";
 
-  private readonly version = 2;
+  private readonly version = 1;
   constructor(private readonly name: string) {}
 
   public readonly initDatabase = (): Promise<IDBDatabase> => {
@@ -17,7 +17,7 @@ export class ModelDatabase {
       request.onupgradeneeded = () => {
         const db = request.result;
         if (!db.objectStoreNames.contains(this.STORE_NAME)) {
-          db.createObjectStore(this.STORE_NAME, { keyPath: "name" });
+          db.createObjectStore(this.STORE_NAME, { keyPath: "url" });
         }
       };
       request.onerror = () => {
@@ -36,7 +36,7 @@ export class ModelDatabase {
       const store = transaction.objectStore(this.STORE_NAME);
       for (const file of files) {
         store.put({
-          name: file.name,
+          url: file.url,
           content: file.content,
         });
       }
@@ -49,7 +49,7 @@ export class ModelDatabase {
     });
   };
 
-  public readonly loadModel = async (): Promise<ModelFile[]> => {
+  public readonly fetchModels = async (): Promise<ModelFile[]> => {
     const database = await this.initDatabase();
     return new Promise((resolve, reject) => {
       const transaction = database.transaction(this.STORE_NAME, "readonly");
