@@ -22,6 +22,12 @@ export default function ModelsManagementPage() {
       <div className="space-y-6">
         <h2 className="text-xl">Available models</h2>
         <div className="space-y-4">
+          {models.length === 0 && (
+            <p className="text-muted-foreground">
+              There are no models available. Please run a model first to
+              download it.
+            </p>
+          )}
           {models.map((model) => {
             return (
               <ModelItem
