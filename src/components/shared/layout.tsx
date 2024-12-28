@@ -1,17 +1,17 @@
-import { PropsWithChildren } from "react";
-import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
-import AppSidebar from "./AppSidebar";
 import { Outlet } from "react-router";
+import { SidebarProvider } from "../ui/sidebar";
+import AppHeader from "./AppHeader";
+import AppSidebar from "./AppSidebar";
 
-type Props = PropsWithChildren;
-
-export default function Layout(props: Props) {
+export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="py-6 px-4 w-full">
-        <SidebarTrigger />
-        <Outlet />
+      <main className="w-full">
+        <AppHeader />
+        <div className="p-4 md:py-6 max-w-screen-lg mx-auto">
+          <Outlet />
+        </div>
       </main>
     </SidebarProvider>
   );

@@ -66,9 +66,9 @@ export default function DocQAndA() {
   };
 
   return (
-    <div className="flex w-full gap-4">
+    <div className="flex flex-col md:flex-row w-full gap-4">
       <div className={styles.section}>
-        <h3>Ask a Question</h3>
+        <h3 className="text-xl">Ask a Question</h3>
         <div className={styles.control}>
           <Label htmlFor="image-upload">Upload image</Label>
           <Input
@@ -90,7 +90,7 @@ export default function DocQAndA() {
         </Button>
       </div>
       <div className={styles.section}>
-        <h3>Answers</h3>
+        <h3 className="text-xl">Answers</h3>
         {answers.length ? (
           <div>
             {answers.map((answer, index) => {
@@ -102,7 +102,7 @@ export default function DocQAndA() {
             {error ? (
               <p className="text-destructive">{error} </p>
             ) : (
-              <p>No answers yet</p>
+              <p className="text-muted-foreground">No answers yet</p>
             )}
           </div>
         )}

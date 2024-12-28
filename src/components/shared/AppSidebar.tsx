@@ -18,7 +18,7 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="p-4">
         <h1 className="text-2xl">ML in browser</h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           A collection of ML models running in browser
         </p>
       </SidebarHeader>
@@ -37,17 +37,35 @@ export default function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            <SettingsIcon /> &nbsp; Settings
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/settings/models-management">
+                    Models management
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link to="/settings">
-                <SettingsIcon /> &nbsp; Settings
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <p className="text-muted-foreground text-xs">
+          Powered by{" "}
+          <a
+            className="text-blue-500 hover:text-blue-600"
+            href="https://huggingface.co/docs/transformers.js/en/index"
+            target="_blank"
+          >
+            Transformers.js
+          </a>
+          .
+        </p>
       </SidebarFooter>
     </Sidebar>
   );
