@@ -1,6 +1,6 @@
 import modelCache from "@/lib/storage/model-cache";
 import { ModelFile } from "@/lib/storage/model-database";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface Model {
   name: string;
@@ -41,16 +41,20 @@ const modelFilesToModels = (files: ModelFile[]): Model[] => {
 
 export default function useModels() {
   const [models, setModels] = useState<Model[]>([]);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<unknown | null>(null);
 
-  useEffect(() => {
-    modelCache
-      .fetchModels()
-      .then((files) => {
-        setModels(modelFilesToModels(files));
-      })
-      .catch(setError);
+  const fetchModels = useCallback(async () => {
+    try {
+      const files = await modelCache.fetchModels();
+      setModels(modelFilesToModels(files));
+    } catch (error) {
+      setError(error);
+    }
   }, []);
 
-  return { models, error };
+  useEffect(() => {
+    fetchModels();
+  }, [fetchModels]);
+
+  return { models, error, refetch: fetchModels };
 }

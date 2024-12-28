@@ -20,6 +20,15 @@ const modelCache = {
     );
     return files;
   },
+
+  deleteModelFiles: async (urls: string[]): Promise<void> => {
+    const cache = await caches.open(MODELS_CACHE_NAME);
+    await Promise.all(
+      urls.map(async (url) => {
+        await cache.delete(url);
+      }),
+    );
+  },
 };
 
 export default modelCache;

@@ -13,3 +13,7 @@ export function assertNonEmpty<T>(
     throw new Error(message);
   }
 }
+
+export function formatNumber(value: number) {
+  return new Intl.NumberFormat().format(value);
+}

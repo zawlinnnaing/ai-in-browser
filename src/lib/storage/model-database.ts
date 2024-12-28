@@ -63,6 +63,25 @@ export class ModelDatabase {
       };
     });
   };
+
+  public readonly deleteModelFiles = async (
+    urls: string[],
+  ): Promise<void> => {
+    const database = await this.initDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction(this.STORE_NAME, "readwrite");
+      const store = transaction.objectStore(this.STORE_NAME);
+      for (const url of urls) {
+        store.delete(url);
+      }
+      transaction.oncomplete = () => {
+        resolve(undefined);
+      };
+      transaction.onerror = (event) => {
+        reject(event);
+      };
+    });
+  };
 }
 
 const modelDatabase = new ModelDatabase(DB_NAME);
