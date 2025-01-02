@@ -17,7 +17,7 @@ export default function GPUWarningBanner() {
   return (
     <div className="flex items-center gap-4 bg-warning p-4">
       <p className="flex-grow text-center text-warning-foreground">
-        GPU is not supported. It will take longer to run models.
+        GPU is not detected. It will take longer to run models.
       </p>
       <button
         className="text-warning-foreground"
