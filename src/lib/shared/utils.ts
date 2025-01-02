@@ -17,3 +17,13 @@ export function assertNonEmpty<T>(
 export function formatNumber(value: number) {
   return new Intl.NumberFormat().format(value);
 }
+
+export async function getIsGPUSupported() {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const adapter = await (navigator as any).gpu.requestAdapter();
+    return !!adapter;
+  } catch {
+    return false;
+  }
+}

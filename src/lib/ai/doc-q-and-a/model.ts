@@ -1,5 +1,5 @@
 import { SUPPORTED_MODELS } from "@/lib/shared/models";
-import { assertNonEmpty } from "@/lib/shared/utils";
+import { assertNonEmpty, getIsGPUSupported } from "@/lib/shared/utils";
 import cacheConnector from "@/lib/storage/cache-connector";
 import {
   DocumentQuestionAnsweringPipeline,
@@ -13,12 +13,15 @@ const docQAndModel = {
     if (pipelineInstance) {
       return pipelineInstance;
     }
+    const isGPUSupported = await getIsGPUSupported();
     pipelineInstance = await pipeline(
       "document-question-answering",
       SUPPORTED_MODELS.docQAndA,
-      {
-        device: "webgpu",
-      },
+      isGPUSupported
+        ? {
+            device: "webgpu",
+          }
+        : undefined,
     );
     cacheConnector.syncCacheToDatabase();
     return pipelineInstance;
