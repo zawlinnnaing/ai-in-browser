@@ -31,9 +31,9 @@ export default function ModelItem(props: ModelItemProps) {
         </div>
         <CollapsibleContent className="p-4 space-y-2">
           <p className="text-sm">Files</p>
-          {props.model.files.map((file) => {
+          {props.model.files.map((file, idx) => {
             return (
-              <div>
+              <div key={idx}>
                 <p className="text-muted-foreground">{file.url}</p>
                 <p className="text-xs text-muted-foreground/80">
                   File size: {formatNumber(file.size)} bytes
