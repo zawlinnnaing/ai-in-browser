@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<DocQAndAPage />} />
-          <Route path="/doc-q-and-a" element={<DocQAndAPage />}/>
+          <Route path="/doc-q-and-a" element={<DocQAndAPage />} />
           <Route path="/settings">
             <Route
               path="models-management"
