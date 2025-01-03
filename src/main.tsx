@@ -6,8 +6,17 @@ import "./index.css";
 import cacheConnector from "./lib/storage/cache-connector.ts";
 import DocQAndAPage from "./pages/DocQAndAPage.tsx";
 import ModelsManagementPage from "./pages/ModelsManagementPage.tsx";
+import { registerSW } from "virtual:pwa-register";
 
 cacheConnector.loadFromDatabase();
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm("New version available! Load new version?")) {
+      updateSW(true);
+    }
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
