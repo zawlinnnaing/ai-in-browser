@@ -4,7 +4,7 @@ Running AI models in browser (without any server) using [Transformers.js](https:
 
 ## Features
 - ✅ Running models in browser with either GPU or CPU(if GPU is not available).
-- (Coming soon) ⏳ Offline support
+- ✅ Offline support
 
 ## Supported models
 - ✅ Document Question & Answering
